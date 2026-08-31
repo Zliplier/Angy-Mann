@@ -6,6 +6,7 @@ namespace Gameplay.Player
     {
         [Header("Components")]
         [SerializeField] private Animator animator;
+        [SerializeField] private GameObject root;
         
         
         

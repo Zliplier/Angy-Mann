@@ -52,5 +52,22 @@ namespace Zlipacket.Core.Input
  
         public void EnableMap() => actionMap?.Enable();
         public void DisableMap() => actionMap?.Disable();
+        
+        /// <summary>
+        /// Clears cached state so the next Initialize() call re-resolves the
+        /// action map from scratch. Without this, a ScriptableObject asset
+        /// that survives across Play Mode sessions (e.g. "Reload Domain"
+        /// disabled in Enter Play Mode Settings) can end up holding an
+        /// InputActionMap reference from a previous, already-torn-down
+        /// InputActionState — which triggers Unity's internal
+        /// "Map must be contained in state" / "index out of range" asserts
+        /// the next time EnableMap() is called.
+        /// </summary>
+        protected virtual void OnDisable()
+        {
+            IsInitialized = false;
+            actionMap = null;
+            inputActionAsset = null;
+        }
     }
 }

@@ -184,13 +184,13 @@ MonoBehaviour:
   - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-379130794-0
     hasColor: 0
     color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
-    hasIcon: 1
+    hasIcon: 0
     iconName: CapsuleCollider Icon
     isCustomIcon: 0
   - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-877389582-0
     hasColor: 0
     color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
-    hasIcon: 1
+    hasIcon: 0
     iconName: cs Script Icon
     isCustomIcon: 0
   - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-444623841-0
@@ -198,4 +198,16 @@ MonoBehaviour:
     color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
     hasIcon: 1
     iconName: Rigidbody Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1737778572-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: CapsuleCollider Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-457481406-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: cs Script Icon
     isCustomIcon: 0

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using InputSO;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zlipacket.Core.Tools.Utilities;
 
 namespace Gameplay.Player
 {
@@ -39,14 +41,19 @@ namespace Gameplay.Player
         [Header("Components")]
         [SerializeField] private Rigidbody rb;
         [SerializeField] private Transform feetPos;
+
+        [Header("Enable")]
+        public bool moveEnabled = true;
+        public bool jumpEnabled = true;
+        public bool gravityEnabled = true;
     
         public bool IsGrounded { get; private set; } = true;
         public bool IsFacingRight { get; private set; } = true;
         
         public float acceleration => IsGrounded? groundAccel : airAccel;
         public float deceleration => IsGrounded? groundDecel : airDecel;
-        private Vector3 movementInput = Vector3.zero;
-		
+        public Vector3 movementInput { get; private set; } = Vector3.zero;
+
         private int jumpUsed = 0;
         private float jumpBufferTime = 0f;
         private float jumpCoyoteTime = 0f;
@@ -55,11 +62,10 @@ namespace Gameplay.Player
         private bool jumpCutFlag = false;
         
         //Velocity
-        private Vector3 velocity => moveVelocity + jumpVelocity + gravityVelocity + modifyerVelocity;
+        private Vector3 velocity => moveVelocity + jumpVelocity + gravityVelocity;
         private Vector3 moveVelocity;
         private Vector3 jumpVelocity;
         private Vector3 gravityVelocity = Vector3.zero;
-        private Vector3 modifyerVelocity;
 
         private void OnEnable()
         {
@@ -75,12 +81,21 @@ namespace Gameplay.Player
 
         private void MovementInput(InputAction.CallbackContext context)
         {
+	        if (!moveEnabled)
+	        {
+		        movementInput = Vector3.zero;
+		        return;
+	        }
+	        
             Vector2 input = context.ReadValue<Vector2>();
-            movementInput = new Vector3(input.x, 0f, input.y).normalized;
+            movementInput = input != Vector2.zero ? new Vector3(input.x, 0f, input.y).normalized : Vector3.zero;
         }
         
         private void JumpInput(InputAction.CallbackContext context)
         {
+	        if (!jumpEnabled)
+		        return;
+	        
 	        //Jump Start
 	        if (context.started)
 	        {
@@ -96,16 +111,23 @@ namespace Gameplay.Player
         private void Update()
         {
 	        UpdateTimer(Time.deltaTime);
-	        
-            TurnCheck();
-            CollisionCheck();
-            HandleMovement();
-            HandleVertical();
-            HandleGravity();
-            
-            ApplyMovement();
+	        TurnCheck();
         }
-    
+
+        private void FixedUpdate()
+        {
+	        CollisionCheck();
+	        DebugGroundCheck();
+            
+	        if (gravityEnabled)
+				HandleGravity();
+	        
+	        HandleHorizontal();
+	        HandleVertical();
+	        
+	        ApplyMovement();
+        }
+
         private void TurnCheck()
         {
             // Turn Left
@@ -127,7 +149,7 @@ namespace Gameplay.Player
     
         private void ApplyMovement() => rb.linearVelocity = velocity;
     
-        private void HandleMovement()
+        private void HandleHorizontal()
         {
             float targetSpeed;
             float accelRate;
@@ -288,6 +310,7 @@ namespace Gameplay.Player
 
         private void TakeOff()
         {
+	        //Debug.Log("TakeOff");
 	        jumpCoyoteTime = jumpCoyote;
         }
         
@@ -302,6 +325,15 @@ namespace Gameplay.Player
 		        jumpBufferTime -= deltaTime;
 	        if (jumpCoyoteTime > 0)
 		        jumpCoyoteTime -= deltaTime;
+        }
+        
+        private void DebugGroundCheck()
+        {
+	        Vector3 boxSize = groundBoxSize;
+	        Vector3 boxOrigin = feetPos.position;
+	        Color color = IsGrounded ? Color.green : Color.red;
+            
+	        ExtDebug.DrawBoxCastBox(boxOrigin, boxSize / 2, Quaternion.identity, Vector3.down, groundRayDistance, color);
         }
     }
 }
