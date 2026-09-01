@@ -43,5 +43,29 @@ namespace Zlipacket.Core.Tools.Extension
                 }
             }
         }
+        
+        public static bool TryGetComponentInChildren<T>(this GameObject root, out T component, bool includeSelf = true, bool includeInactive = false) where T : class
+        {
+            component = null;
+
+            if (includeSelf && (includeInactive || root.activeInHierarchy))
+            {
+                component = root.GetComponent<T>();
+                if (component != null)
+                    return true;
+            }
+
+            foreach (GameObject child in root.AllChilds())
+            {
+                if (!includeInactive && !child.activeInHierarchy)
+                    continue;
+
+                component = child.GetComponent<T>();
+                if (component != null)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

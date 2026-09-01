@@ -18,7 +18,7 @@ namespace Gameplay.Player
         [field: SerializeField] public PlayerCombat playerCombat { get; private set; }
 
         private StateMachine<PlayerController> stateMachine;
-        private InputBuffer inputBuffer { get; } = new InputBuffer();
+        public InputBuffer inputBuffer { get; } = new InputBuffer();
 
         public override void Awake()
         {
@@ -27,14 +27,16 @@ namespace Gameplay.Player
             stateMachine = new StateMachine<PlayerController>(this);
             stateMachine.AddState<PlayerIdle>();
             stateMachine.AddState<PlayerMove>();
-            stateMachine.AddState<PlayerNormal1>();
             stateMachine.AddState<PlayerDead>();
             
-            //Attack State
+            //Attack Transition
+            stateMachine.AddState<PlayerNormal1>();
+            stateMachine.AddState<PlayerNormal2>();
+            stateMachine.AddState<PlayerNormal3>();
             stateMachine.AddTransition<PlayerIdle, PlayerNormal1>("Primary");
             stateMachine.AddTransition<PlayerMove, PlayerNormal1>("Primary");
             
-            //Dead State
+            //Dead Transition
             stateMachine.AddAnyTrigger<PlayerDead>("Dead");
             
             stateMachine.Start<PlayerIdle>();

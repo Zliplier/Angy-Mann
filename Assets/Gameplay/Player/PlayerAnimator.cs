@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using Zlipacket.Core.Tools.Extension;
 
@@ -9,14 +11,16 @@ namespace Gameplay.Player
     {
         [Header("Components")]
         [SerializeField] private Animator animator;
-        [SerializeField] private GameObject root;
+        [SerializeField] private TextMeshPro faceText;
+        [SerializeField] private List<GameObject> flipTargets;
         
         public AnimatorClipInfo GetCurrentClip(int layerIndex = 0)
             => animator.GetCurrentAnimatorClipInfo(layerIndex)[0];
         
         public void Flip(bool isRight)
         {
-            root.transform.localScale = root.transform.localScale.Insert(x: Math.Abs(root.transform.localScale.x) * (isRight ? 1 : -1));
+            foreach (var flipTarget in flipTargets)
+                flipTarget.transform.localScale = flipTarget.transform.localScale.Insert(x: Math.Abs(flipTarget.transform.localScale.x) * (isRight ? 1 : -1));
         }
 
         public AnimatorClipInfo Play(string animationName, float speed = 1f, int layerIndex = 0)
@@ -46,12 +50,17 @@ namespace Gameplay.Player
             
             return clipInfo;
         }
+
+        public void SetFaceText(string text, float size = 4f)
+            => faceText.SetText(text);
     }
 
     public enum PlayerAnimationName
     {
         Idle, 
         Move, 
-        Normal
+        Normal1, 
+        Normal2, 
+        Normal3
     }
 }

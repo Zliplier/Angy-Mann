@@ -7,6 +7,7 @@ namespace Zlipacket.Core.Tools.Utilities
     {
         public float Duration { get; private set; }
         public float TimeRemaining { get; private set; }
+        public float NormalizedTime => TimeRemaining / Duration; // 1 -> 0
         public bool IsRunning { get; private set; }
         public bool IsLooping { get; set; }
 

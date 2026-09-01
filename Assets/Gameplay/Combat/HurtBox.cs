@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using Zlipacket.Core.Tools.Extension;
+
+namespace Gameplay.Combat
+{
+    public class HurtBox : MonoBehaviour
+    {
+        [Header("Configs")]
+        public string hitTag;
+        public float damage;
+        public float hitStopTime;
+
+        [Header("Components")]
+        public GameObject owner;
+        
+        [Header("Events")]
+        public UnityEvent<HitData> onHitSuccess;
+        
+        private List<Hitbox> hitList = new List<Hitbox>();
+
+        private void OnDisable()
+        {
+            hitList.Clear();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag(hitTag))
+                return;
+            
+            if (other.TryGetComponent(out Hitbox hitbox))
+            {
+                if (hitList.Find(h => h.owner == hitbox.owner) == null)
+                {
+                    hitList.Add(hitbox);
+                    Hit(hitbox);
+                }
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag(hitTag))
+                return;
+            
+            if (other.TryGetComponent(out Hitbox hitbox))
+            {
+                if (hitList.Contains(hitbox))
+                {
+                    hitList.Remove(hitbox);
+                }
+            }
+        }
+
+        private void Hit(Hitbox hitbox)
+        {
+            HitData hitData = new HitData(damage, this, hitbox);
+            onHitSuccess.Invoke(hitData);
+            hitbox.onHitRecieved.Invoke(hitData);
+        }
+    }
+    
+    [Serializable]
+    public class HitData
+    {
+        public float damage;
+        public HurtBox dealer;
+        public GameObject dealerOwner => dealer?.owner;
+        public Hitbox target;
+        public GameObject targetOwner => target?.owner;
+
+        public HitData(float damage, HurtBox dealer, Hitbox target)
+        {
+            this.damage = damage;
+            this.dealer = dealer;
+            this.target = target;
+        }
+    }
+}

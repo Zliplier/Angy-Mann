@@ -4,7 +4,7 @@ using Zlipacket.Core.Tools.Utilities;
 
 namespace Gameplay.Player.PlayerState.Action
 {
-    public class PlayerNormal1 : State<PlayerController>
+    public class PlayerNormal3 : State<PlayerController>
     {
         private Timer timer;
         
@@ -12,7 +12,7 @@ namespace Gameplay.Player.PlayerState.Action
         {
             base.OnEnter();
             
-            AnimatorClipInfo clipInfo = Owner.playerAnimator.Play(nameof(PlayerAnimationName.Normal1));
+            AnimatorClipInfo clipInfo = Owner.playerAnimator.Play(nameof(PlayerAnimationName.Normal3));
 
             Owner.playerMovement.moveEnabled = false;
             Owner.playerMovement.jumpEnabled = false;
@@ -24,16 +24,10 @@ namespace Gameplay.Player.PlayerState.Action
             };
             timer.Start();
         }
-
+        
         public override void OnUpdate()
         {
             base.OnUpdate();
-            
-            if (timer?.NormalizedTime <= 0.2f)
-            {
-                if (Owner.inputBuffer.TryConsume("Primary", overrideAction: () => Machine.ChangeState<PlayerNormal2>()))
-                    return;
-            }
             
             timer?.Tick(Time.deltaTime);
         }

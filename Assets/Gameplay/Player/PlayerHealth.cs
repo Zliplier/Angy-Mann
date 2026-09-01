@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Gameplay.Combat;
+using UnityEngine;
 
 namespace Gameplay.Player
 {
-    public class PlayerHealth : MonoBehaviour
+    public class PlayerHealth : Health
     {
         
     }

@@ -211,3 +211,27 @@ MonoBehaviour:
     hasIcon: 1
     iconName: cs Script Icon
     isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1069451707-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: Image Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1521920948-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: SphereCollider Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1275155212-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: SphereCollider Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1904424706-0
+    hasColor: 1
+    color: {r: 0.85, g: 0.3, b: 0.6, a: 1}
+    hasIcon: 1
+    iconName: Folder Icon
+    isCustomIcon: 0
