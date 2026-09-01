@@ -81,21 +81,12 @@ namespace Gameplay.Player
 
         private void MovementInput(InputAction.CallbackContext context)
         {
-	        if (!moveEnabled)
-	        {
-		        movementInput = Vector3.zero;
-		        return;
-	        }
-	        
             Vector2 input = context.ReadValue<Vector2>();
             movementInput = input != Vector2.zero ? new Vector3(input.x, 0f, input.y).normalized : Vector3.zero;
         }
         
         private void JumpInput(InputAction.CallbackContext context)
         {
-	        if (!jumpEnabled)
-		        return;
-	        
 	        //Jump Start
 	        if (context.started)
 	        {
@@ -123,13 +114,20 @@ namespace Gameplay.Player
 				HandleGravity();
 	        
 	        HandleHorizontal();
-	        HandleVertical();
+	        
+	        if (jumpEnabled)
+				HandleVertical();
 	        
 	        ApplyMovement();
         }
 
         private void TurnCheck()
         {
+	        if (moveVelocity.x > 0)
+		        IsFacingRight = true;
+	        else if (moveVelocity.x < 0)
+		        IsFacingRight = false;
+	        
             // Turn Left
             if (moveVelocity.x > 0 && movementInput.x < 0)
             {
@@ -138,7 +136,7 @@ namespace Gameplay.Player
             // Turn Right
             else if (moveVelocity.x < 0 && movementInput.x > 0)
             {
-                moveVelocity.x -= moveVelocity.x * turnCompensation;
+	            moveVelocity.x -= moveVelocity.x * turnCompensation;
             }
 
             if ((moveVelocity.z < 0 && movementInput.z > 0) || (moveVelocity.z < 0 && movementInput.z > 0))
@@ -154,7 +152,7 @@ namespace Gameplay.Player
             float targetSpeed;
             float accelRate;
 
-            if (movementInput.sqrMagnitude > 0f)
+            if (movementInput.sqrMagnitude > 0f && moveEnabled)
             {
                 targetSpeed = walkSpeed;
                 accelRate = acceleration;
