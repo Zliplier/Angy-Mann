@@ -12,7 +12,7 @@ namespace Gameplay.Player
     public class PlayerController : Singleton<PlayerController>
     {
         [Header("Components")]
-        [field: SerializeField] public PlayerHealth PlayerHealth { get; private set; }
+        [field: SerializeField] public PlayerHealth playerHealth { get; private set; }
         [field: SerializeField] public PlayerMovement playerMovement { get; private set; }
         [field: SerializeField] public PlayerAnimator playerAnimator { get; private set; }
         [field: SerializeField] public PlayerCombat playerCombat { get; private set; }
@@ -27,19 +27,23 @@ namespace Gameplay.Player
             stateMachine = new StateMachine<PlayerController>(this);
             stateMachine.AddState<PlayerIdle>();
             stateMachine.AddState<PlayerMove>();
+            stateMachine.AddState<PlayerHurt>();
             stateMachine.AddState<PlayerDead>();
             
-            //Attack Transition
+            //Transition
             stateMachine.AddState<PlayerNormal1>();
             stateMachine.AddState<PlayerNormal2>();
             stateMachine.AddState<PlayerNormal3>();
             stateMachine.AddTransition<PlayerIdle, PlayerNormal1>("Primary");
             stateMachine.AddTransition<PlayerMove, PlayerNormal1>("Primary");
             
-            //Dead Transition
+            //Any Transition
+            stateMachine.AddAnyTrigger<PlayerHurt>("Hurt");
             stateMachine.AddAnyTrigger<PlayerDead>("Dead");
             
             stateMachine.Start<PlayerIdle>();
+            
+            playerHealth.onDeath.AddListener(() => stateMachine.Fire("Dead"));
         }
 
         public void NormalAction()

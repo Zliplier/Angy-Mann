@@ -45,6 +45,8 @@ namespace Gameplay.Player.PlayerState.Action
             Owner.playerMovement.moveEnabled = true;
             Owner.playerMovement.jumpEnabled = true;
 
+            Owner.playerCombat.SetActiveAllHurtboxes(false);
+            
             timer?.Stop();
         }
     }

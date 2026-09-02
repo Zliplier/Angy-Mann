@@ -59,6 +59,8 @@ namespace Gameplay.Player
     {
         Idle, 
         Move, 
+        Hurt, 
+        Dead, 
         Normal1, 
         Normal2, 
         Normal3

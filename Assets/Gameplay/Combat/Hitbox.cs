@@ -10,5 +10,10 @@ namespace Gameplay.Combat
         
         [Header("Events")]
         public UnityEvent<HitData> onHitRecieved;
+
+        public void Hit(HitData hitData)
+        {
+            onHitRecieved?.Invoke(hitData);
+        }
     }
 }

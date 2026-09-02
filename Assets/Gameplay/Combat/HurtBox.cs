@@ -59,7 +59,7 @@ namespace Gameplay.Combat
         {
             HitData hitData = new HitData(damage, this, hitbox);
             onHitSuccess.Invoke(hitData);
-            hitbox.onHitRecieved.Invoke(hitData);
+            hitbox.Hit(hitData);
         }
     }
     

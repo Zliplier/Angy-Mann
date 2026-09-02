@@ -24,6 +24,9 @@ namespace Gameplay.Combat
             get => health;
             set
             {
+                if (invincibilityEnabled)
+                    return;
+                
                 health = Mathf.Clamp(value, 0, maxHealth);
                 onHealthChanged?.Invoke(health, maxHealth);
                 if (health <= 0f && !IsDead)
@@ -34,5 +37,10 @@ namespace Gameplay.Combat
             }
         }
         public float HealthPercentage => health / maxHealth;
+
+        public void AddHealth(float amount)
+        {
+            HealthPoints += amount;
+        }
     }
 }
