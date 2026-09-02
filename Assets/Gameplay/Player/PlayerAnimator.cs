@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -20,7 +19,7 @@ namespace Gameplay.Player
         public void Flip(bool isRight)
         {
             foreach (var flipTarget in flipTargets)
-                flipTarget.transform.localScale = flipTarget.transform.localScale.Insert(x: Math.Abs(flipTarget.transform.localScale.x) * (isRight ? 1 : -1));
+                flipTarget.transform.localScale = flipTarget.transform.localScale.Insert(x: Mathf.Abs(flipTarget.transform.localScale.x) * (isRight ? 1 : -1));
         }
 
         public AnimatorClipInfo Play(string animationName, float speed = 1f, int layerIndex = 0)

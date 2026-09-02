@@ -10,6 +10,7 @@ namespace Gameplay.Player.PlayerState
             base.OnEnter();
             
             Owner.playerAnimator.Play(nameof(PlayerAnimationName.Idle));
+            
         }
 
         public override void OnUpdate()

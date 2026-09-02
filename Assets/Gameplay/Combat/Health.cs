@@ -12,7 +12,7 @@ namespace Gameplay.Combat
 
         [Header("Events")]
         public UnityEvent<float, float> onHealthChanged;
-        public UnityEvent onDeath;
+        public UnityEvent onDead;
 
         [Header("Enable")]
         public bool invincibilityEnabled = false;
@@ -32,7 +32,7 @@ namespace Gameplay.Combat
                 if (health <= 0f && !IsDead)
                 {
                     IsDead = true;
-                    onDeath?.Invoke();
+                    onDead?.Invoke();
                 }
             }
         }

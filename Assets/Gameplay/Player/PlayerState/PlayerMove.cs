@@ -10,6 +10,8 @@ namespace Gameplay.Player.PlayerState
             base.OnEnter();
             
             Owner.playerAnimator.Play(nameof(PlayerAnimationName.Move));
+            
+            Owner.playerCombat.SetActiveAllHurtboxes(false);
         }
 
         public override void OnUpdate()

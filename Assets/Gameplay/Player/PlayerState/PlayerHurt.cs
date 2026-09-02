@@ -19,6 +19,8 @@ namespace Gameplay.Player.PlayerState
             Owner.playerMovement.moveEnabled = false;
             Owner.playerMovement.jumpEnabled = false;
             
+            Owner.playerCombat.StartIFrame(Owner.playerCombat.damageIFrameWindow);
+            
             timer = new Timer(clipInfo.clip.length);
             timer.OnTimerComplete += () =>
             {

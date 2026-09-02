@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.Combat;
 using Gameplay.Player.PlayerState;
 using Gameplay.Player.PlayerState.Action;
 using UnityEngine;
@@ -25,6 +26,8 @@ namespace Gameplay.Player
             base.Awake();
 
             stateMachine = new StateMachine<PlayerController>(this);
+            
+            //States
             stateMachine.AddState<PlayerIdle>();
             stateMachine.AddState<PlayerMove>();
             stateMachine.AddState<PlayerHurt>();
@@ -42,8 +45,6 @@ namespace Gameplay.Player
             stateMachine.AddAnyTrigger<PlayerDead>("Dead");
             
             stateMachine.Start<PlayerIdle>();
-            
-            playerHealth.onDeath.AddListener(() => stateMachine.Fire("Dead"));
         }
 
         public void NormalAction()
@@ -53,12 +54,18 @@ namespace Gameplay.Player
 
         private void OnEnable()
         {
-            playerCombat.OnPrimary.AddListener(NormalAction);
+            playerHealth.onDead.AddListener(OnDead);
+            
+            playerCombat.onHit.AddListener(OnHit);
+            playerCombat.onPrimary.AddListener(NormalAction);
         }
 
         private void OnDisable()
         {
-            playerCombat.OnPrimary.RemoveListener(NormalAction);
+            playerHealth.onDead.RemoveListener(OnDead);
+            
+            playerCombat.onHit.RemoveListener(OnHit);
+            playerCombat.onPrimary.RemoveListener(NormalAction);
         }
 
         private void Update()
@@ -76,6 +83,18 @@ namespace Gameplay.Player
         private void LateUpdate()
         {
             stateMachine.LateTick();
+        }
+
+        private void OnHit(HitData hitData)
+        {
+            playerHealth.HealthPoints -= hitData.damage;
+            if (!playerHealth.IsDead)
+                stateMachine.Fire("Hurt");
+        }
+
+        private void OnDead()
+        {
+            stateMachine.Fire("Dead");
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Gameplay.Player.PlayerState.Action
         {
             base.OnUpdate();
             
-            if (timer?.NormalizedTime <= 0.2f)
+            if (timer?.NormalizedTime <= 0.15f)
             {
                 if (Owner.inputBuffer.TryConsume("Primary", overrideAction: () => Machine.ChangeState<PlayerNormal3>()))
                     return;
@@ -46,7 +46,7 @@ namespace Gameplay.Player.PlayerState.Action
             Owner.playerMovement.jumpEnabled = true;
             
             Owner.playerCombat.SetActiveAllHurtboxes(false);
-
+            
             timer?.Stop();
         }
     }

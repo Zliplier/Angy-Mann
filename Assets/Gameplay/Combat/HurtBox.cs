@@ -19,7 +19,7 @@ namespace Gameplay.Combat
         [Header("Events")]
         public UnityEvent<HitData> onHitSuccess;
         
-        private List<Hitbox> hitList = new List<Hitbox>();
+        private List<GameObject> hitList = new List<GameObject>();
 
         private void OnDisable()
         {
@@ -28,14 +28,15 @@ namespace Gameplay.Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag(hitTag))
+            if (string.IsNullOrWhiteSpace(hitTag) || !other.CompareTag(hitTag))
                 return;
             
+            //Debug.Log("Hitbox Enter: " + other.name);
             if (other.TryGetComponent(out Hitbox hitbox))
             {
-                if (hitList.Find(h => h.owner == hitbox.owner) == null)
+                if (!hitList.Contains(hitbox.owner))
                 {
-                    hitList.Add(hitbox);
+                    hitList.Add(hitbox.owner);
                     Hit(hitbox);
                 }
             }
@@ -43,20 +44,21 @@ namespace Gameplay.Combat
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.CompareTag(hitTag))
+            if (string.IsNullOrWhiteSpace(hitTag) || !other.CompareTag(hitTag))
                 return;
             
             if (other.TryGetComponent(out Hitbox hitbox))
             {
-                if (hitList.Contains(hitbox))
+                if (hitList.Contains(hitbox.owner))
                 {
-                    hitList.Remove(hitbox);
+                    hitList.Remove(hitbox.owner);
                 }
             }
         }
 
         private void Hit(Hitbox hitbox)
         {
+            Debug.Log("Hit");
             HitData hitData = new HitData(damage, this, hitbox);
             onHitSuccess.Invoke(hitData);
             hitbox.Hit(hitData);

@@ -37,7 +37,7 @@ namespace Zlipacket.Core.Audio
                 }
             }
             
-            channels[channelIndex].PlayAudio(clip, fadeInDuration, fadeOutDuration, loop);
+            GetChannel(channelIndex).PlayAudio(clip, fadeInDuration, fadeOutDuration, loop);
             
             return channels[channelIndex];
         }

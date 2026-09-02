@@ -9,12 +9,12 @@ namespace Zlipacket.Core.Audio
     {
         public AudioMixerGroup MixerGroup => AudioManager.Instance.GetMixerGroup(MixerType.Sfx);
 
-        public AudioSource PlaySfx(AudioClip clip, float volume = 1.0f, bool loop = false)
+        public AudioSource PlaySfx(AudioClip clip, float volume = 1f, float pitch = 1f, bool loop = false)
         {
-            return PlaySfxAtLocation(clip, transform.position, volume, loop);
+            return PlaySfxAtLocation(clip, transform.position, volume, pitch, loop);
         }
         
-        public AudioSource PlaySfxAtLocation(AudioClip clip, Vector3 location, float volume = 1.0f, bool loop = false)
+        public AudioSource PlaySfxAtLocation(AudioClip clip, Vector3 location, float volume = 1f, float pitch = 1f, bool loop = false)
         {
             GameObject newObject = new GameObject($"Sfx - {clip.name}");
             newObject.transform.SetParent(transform);
@@ -23,6 +23,7 @@ namespace Zlipacket.Core.Audio
             newSfx.playOnAwake = false;
             newSfx.clip = clip;
             newSfx.volume = volume;
+            newSfx.pitch = pitch;
             newSfx.loop = loop;
             newSfx.Play();
             

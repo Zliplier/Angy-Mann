@@ -144,9 +144,14 @@ namespace Gameplay.Player
                 moveVelocity.z -= moveVelocity.z * turnCompensation;
             }
         }
-    
-        private void ApplyMovement() => rb.linearVelocity = velocity;
-    
+
+        private void ApplyMovement()
+        {
+	        rb.linearVelocity = velocity;
+	        //rb.MovePosition(rb.position + (velocity * Time.fixedDeltaTime));
+        }
+        
+
         private void HandleHorizontal()
         {
             float targetSpeed;

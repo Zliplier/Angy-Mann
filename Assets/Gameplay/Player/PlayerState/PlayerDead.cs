@@ -9,6 +9,7 @@ namespace Gameplay.Player.PlayerState
             base.OnEnter();
             
             Owner.playerAnimator.Play(nameof(PlayerAnimationName.Dead));
+            Owner.playerAnimator.SetFaceText("+- +");
             
             Owner.playerMovement.moveEnabled = false;
             Owner.playerMovement.jumpEnabled = false;

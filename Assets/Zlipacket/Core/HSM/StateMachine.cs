@@ -125,12 +125,16 @@ namespace Zlipacket.Core.HSM
  
         /// Fires a trigger. Checks the active chain leaf-to-root first (so a child's
         /// mapping wins over its parent's), then falls back to any-state triggers.
-        /// Returns true if a transition happened.
-        public bool Fire(string trigger)
+        /// Returns true if a matching transition was found. By default, firing a
+        /// trigger that targets the state you're already in is a no-op (same as
+        /// ChangeState) - pass force: true to re-enter it anyway (re-runs
+        /// OnExit -> OnEnter), which is what you want for things like a hit
+        /// reaction that should reset its timer on every hit, even repeated ones.
+        public bool Fire(string trigger, bool force = false)
         {
             if (TryGetTriggerTarget(trigger, out var target))
             {
-                ChangeStateInternal(target);
+                ChangeStateInternal(target, force: force);
                 return true;
             }
             return false;
@@ -218,7 +222,11 @@ namespace Zlipacket.Core.HSM
             for (int i = activeChain.Count - 1; i > common; i--)
                 activeChain[i].OnExit();
  
-            if (oldLeaf != null && recordHistory)
+            // Don't record a state re-entering itself (force:true self-trigger)
+            // as "history" - it isn't a different previous state, and pushing
+            // it would make a later GoToPreviousState() pop back to the same
+            // type, hit the same-leaf guard, and silently do nothing.
+            if (oldLeaf != null && recordHistory && oldLeaf.GetType() != targetType)
             {
                 history.Push(oldLeaf.GetType());
                 TrimHistory();

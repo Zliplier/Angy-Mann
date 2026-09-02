@@ -42,7 +42,7 @@ namespace Gameplay.Player
             float healthDecayMultiplier = Mathf.Lerp(minHealthDecayMultiplier, maxHealthDecayMultiplier, 1 - healthDecayTimer.NormalizedTime);
             HealthPoints -= healthDecayRate * healthDecayMultiplier * Time.deltaTime;
             
-            
+            lerpSlider.value = Mathf.Lerp(lerpSlider.value, healthSlider.value, lerpSpeed * Time.deltaTime);
         }
     }
 }
