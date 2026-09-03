@@ -36,7 +36,7 @@ namespace Gameplay.Player
 	    public float groundRayDistance;
         
         [Header("Input")]
-        [SerializeField] private PlayerMapContext playerInputMap;
+        [field: SerializeField] public PlayerMapContext playerInputMap { get; private set; }
 
         [Header("Components")]
         [SerializeField] private Rigidbody rb;

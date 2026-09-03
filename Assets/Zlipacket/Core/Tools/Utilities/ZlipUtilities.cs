@@ -7,7 +7,7 @@ namespace Zlipacket.Core.Tools.Utilities
 {
     public static class ZlipUtilities
     {
-        public static bool CastMouseCickRaycast(Camera cam, Vector2 mousePosition, out RaycastHit raycastHit)
+        public static bool CastMouseCickRaycast(UnityEngine.Camera cam, Vector2 mousePosition, out RaycastHit raycastHit)
         {
             raycastHit = new RaycastHit();
             
@@ -146,6 +146,23 @@ namespace Zlipacket.Core.Tools.Utilities
             {
                 Debug.LogWarning("Folder does not exist at path: " + folderPath);
             }
+        }
+        
+        /// <summary>
+        /// Returns a random point uniformly distributed within the given BoxCollider's volume, in world space.
+        /// Accounts for the collider's local center/size offset as well as the transform's position, rotation, and scale.
+        /// </summary>
+        /// <param name="box">The BoxCollider to sample a point from.</param>
+        /// <returns>A random world-space point inside the box collider.</returns>
+        public static Vector3 GetRandomPointInBoxCollider(BoxCollider box)
+        {
+            Vector3 localPoint = new Vector3(
+                Random.Range(-0.5f, 0.5f) * box.size.x,
+                Random.Range(-0.5f, 0.5f) * box.size.y,
+                Random.Range(-0.5f, 0.5f) * box.size.z
+            ) + box.center;
+
+            return box.transform.TransformPoint(localPoint);
         }
     }
 }

@@ -6,18 +6,15 @@ namespace Gameplay.Enemy
 {
     public class EnemyMovement : MonoBehaviour
     {
-        [Header("Configs")]
-        public float deceleration;
-        
         [Header("Components")]
         [field: SerializeField] public NavMeshAgent agent { get; private set; }
         [SerializeField] private Rigidbody rb;
-
-        public bool IsFacingRight = true;
+        
+        public bool IsFacingRight { get; private set; } = true;
 
         public Vector3 velocity => agent.desiredVelocity + additionalVelocity;
         
-        public Vector3 additionalVelocity = Vector3.zero;
+        public Vector3 additionalVelocity { get; private set; } = Vector3.zero;
         
         private void Start()
         {
@@ -35,6 +32,12 @@ namespace Gameplay.Enemy
             HandleImpulse();
 
             ApplyMovement();
+            //Debug.Log(agent.desiredVelocity);
+        }
+        
+        private void LateUpdate()
+        {
+            agent.nextPosition = rb.position;
         }
 
         private void ApplyMovement()
@@ -47,9 +50,9 @@ namespace Gameplay.Enemy
             agent.SetDestination(destination);
         }
 
-        public void Stop()
+        public void SetEnableMovement(bool enable)
         {
-            agent.isStopped = true;
+            agent.isStopped = !enable;
         }
 
         private void TurnCheck()

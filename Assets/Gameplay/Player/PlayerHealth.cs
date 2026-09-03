@@ -21,6 +21,9 @@ namespace Gameplay.Player
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Slider lerpSlider;
 
+        [Header("Enabled")]
+        public bool decayEnabled = true;
+        
         private Timer healthDecayTimer;
         
         private void Awake()
@@ -37,7 +40,8 @@ namespace Gameplay.Player
 
         private void Update()
         {
-            healthDecayTimer.Tick(Time.deltaTime);
+            if (decayEnabled)
+                healthDecayTimer.Tick(Time.deltaTime);
             
             float healthDecayMultiplier = Mathf.Lerp(minHealthDecayMultiplier, maxHealthDecayMultiplier, 1 - healthDecayTimer.NormalizedTime);
             HealthPoints -= healthDecayRate * healthDecayMultiplier * Time.deltaTime;

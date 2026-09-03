@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Gameplay.Combat;
 using Gameplay.Enemy.Dave.Action;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Gameplay.Enemy.Dave
     public class DaveController : MonoBehaviour
     {
         [Header("Components")]
+        [field: SerializeField] public GameObject root { get; private set; }
         [field: SerializeField] public EnemyCombat daveCombat { get; private set; }
         [field: SerializeField] public EnemyMovement daveMovement { get; private set; }
         [field: SerializeField] public EnemyAnimator daveAnimator { get; private set; }
@@ -74,6 +76,15 @@ namespace Gameplay.Enemy.Dave
         private void OnDead()
         {
             stateMachine.Fire("Dead");
+        }
+
+        public void Despawn()
+        {
+            Tween tween = root.transform.DOScale(0.1f, 0.25f);
+            tween.OnComplete(() =>
+            {
+                Destroy(root);
+            });
         }
     }
 

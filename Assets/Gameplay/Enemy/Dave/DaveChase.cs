@@ -11,6 +11,7 @@ namespace Gameplay.Enemy.Dave
             base.OnEnter();
 
             Owner.daveAnimator.Play(nameof(DaveAnimationName.Move));
+            Owner.daveMovement.SetEnableMovement(true);
         }
 
         public override void OnUpdate()
@@ -18,8 +19,9 @@ namespace Gameplay.Enemy.Dave
             base.OnUpdate();
             
             Owner.daveAnimator.Flip(Owner.daveMovement.IsFacingRight);
-
-            Owner.daveMovement.MoveTo(PlayerController.Instance.transform.position);
+            
+            Owner.daveMovement.MoveTo(PlayerController.Instance.root.transform.position);
+            
             if (Owner.daveMovement.agent.remainingDistance <= Owner.daveMovement.agent.stoppingDistance)
             {
                 Machine.ChangeState<DaveNormal>();
@@ -30,7 +32,7 @@ namespace Gameplay.Enemy.Dave
         {
             base.OnExit();
             
-            Owner.daveMovement.Stop();
+            Owner.daveMovement.SetEnableMovement(false);
         }
     }
 }

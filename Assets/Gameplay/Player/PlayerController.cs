@@ -13,11 +13,15 @@ namespace Gameplay.Player
     public class PlayerController : Singleton<PlayerController>
     {
         [Header("Components")]
+        [field: SerializeField] public GameObject root { get; private set; }
         [field: SerializeField] public PlayerHealth playerHealth { get; private set; }
+        [field: SerializeField] public PlayerScore PlayerScore { get; private set; }
         [field: SerializeField] public PlayerMovement playerMovement { get; private set; }
         [field: SerializeField] public PlayerAnimator playerAnimator { get; private set; }
         [field: SerializeField] public PlayerCombat playerCombat { get; private set; }
 
+        [Header("Input")]
+        
         private StateMachine<PlayerController> stateMachine;
         public InputBuffer inputBuffer { get; } = new InputBuffer();
 
@@ -68,6 +72,11 @@ namespace Gameplay.Player
             playerCombat.onPrimary.RemoveListener(NormalAction);
         }
 
+        private void Start()
+        {
+            SetControlEnabled(false);
+        }
+
         private void Update()
         {
             stateMachine.Tick(Time.deltaTime);
@@ -85,9 +94,20 @@ namespace Gameplay.Player
             stateMachine.LateTick();
         }
 
+        public void SetControlEnabled(bool enabled)
+        {
+            if (enabled)
+                playerMovement.playerInputMap.EnableMap();
+            else
+                playerMovement.playerInputMap.DisableMap();
+            
+            playerHealth.decayEnabled = enabled;
+        }
+
         private void OnHit(HitData hitData)
         {
-            playerHealth.HealthPoints -= hitData.damage;
+            playerHealth.AddHealth(-hitData.damage);
+            PlayerScore.AddScore(hitData.score);
             if (!playerHealth.IsDead)
                 stateMachine.Fire("Hurt");
         }

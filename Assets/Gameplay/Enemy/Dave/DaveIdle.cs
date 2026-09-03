@@ -7,7 +7,7 @@ namespace Gameplay.Enemy.Dave
     public class DaveIdle : State<DaveController>
     {
         private float minIdleTime = 0.5f;
-        private float maxIdleTime = 1.5f;
+        private float maxIdleTime = 1f;
 
         private Timer idleTimer;
         

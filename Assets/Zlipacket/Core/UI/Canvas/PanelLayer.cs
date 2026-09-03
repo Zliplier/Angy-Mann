@@ -8,7 +8,7 @@ namespace Zlipacket.Core.UI.Canvas
         public string layerName;
         public GameObject layerRoot => gameObject;
         [SerializeField] private CanvasGroup canvasGroup;
-        public CanvasGroupController cgController;
+        public CanvasGroupController cgController {get; private set;}
 
         private void Awake()
         {

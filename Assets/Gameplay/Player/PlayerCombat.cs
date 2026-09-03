@@ -18,7 +18,7 @@ namespace Gameplay.Player
         public float damageIFrameWindow = 1f;
         
         [Header("Input")]
-        [SerializeField] private PlayerMapContext playerInputMap;
+        [field: SerializeField] public PlayerMapContext playerInputMap { get; private set; }
 
         [Header("Components")]
         [SerializeField] private List<Hitbox> hitboxes;
@@ -74,7 +74,7 @@ namespace Gameplay.Player
         
         public void StartIFrame(float time)
         {
-            if (iFrameTimer.IsRunning && iFrameTimer.TimeRemaining > time)
+            if (iFrameTimer != null && iFrameTimer.IsRunning && iFrameTimer.TimeRemaining > time)
                 return;
             
             SetActiveAllHitboxes(false);
