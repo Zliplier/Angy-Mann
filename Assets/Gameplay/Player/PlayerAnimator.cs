@@ -22,13 +22,17 @@ namespace Gameplay.Player
                 flipTarget.transform.localScale = flipTarget.transform.localScale.Insert(x: Mathf.Abs(flipTarget.transform.localScale.x) * (isRight ? 1 : -1));
         }
 
-        public AnimatorClipInfo Play(string animationName, float speed = 1f, int layerIndex = 0)
+        public AnimatorClipInfo Play(string animationName, float speed = 1f, int layerIndex = 0, bool allowedRetrigger = true)
         {
             animator.speed = speed;
 
             if (animator.HasState(layerIndex, Animator.StringToHash(animationName)))
             {
-                animator.Play(animationName, layerIndex);
+                if (allowedRetrigger)
+                    animator.Play(animationName, layerIndex, 0f);
+                else
+                    animator.Play(animationName, layerIndex);
+                
                 animator.Update(0f); 
             }
             else

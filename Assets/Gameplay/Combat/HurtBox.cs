@@ -11,6 +11,7 @@ namespace Gameplay.Combat
         [Header("Configs")]
         public string hitTag;
         public float damage;
+        public float knockbackForce;
         public float hitStopTime;
 
         [Header("Components")]
@@ -58,8 +59,8 @@ namespace Gameplay.Combat
 
         private void Hit(Hitbox hitbox)
         {
-            Debug.Log("Hit");
-            HitData hitData = new HitData(damage, this, hitbox);
+            //Debug.Log("Hit");
+            HitData hitData = new HitData(damage, knockbackForce, this, hitbox);
             onHitSuccess.Invoke(hitData);
             hitbox.Hit(hitData);
         }
@@ -69,14 +70,18 @@ namespace Gameplay.Combat
     public class HitData
     {
         public float damage;
+        public float knockbackForce;
+        
         public HurtBox dealer;
         public GameObject dealerOwner => dealer?.owner;
         public Hitbox target;
         public GameObject targetOwner => target?.owner;
 
-        public HitData(float damage, HurtBox dealer, Hitbox target)
+        public HitData(float damage, float knockbackForce, HurtBox dealer, Hitbox target)
         {
             this.damage = damage;
+            this.knockbackForce = knockbackForce;
+            
             this.dealer = dealer;
             this.target = target;
         }

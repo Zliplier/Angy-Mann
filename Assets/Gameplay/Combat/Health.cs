@@ -24,7 +24,7 @@ namespace Gameplay.Combat
             get => health;
             set
             {
-                if (invincibilityEnabled)
+                if (value < 0 && invincibilityEnabled)
                     return;
                 
                 health = Mathf.Clamp(value, 0, maxHealth);

@@ -7,7 +7,7 @@ namespace Gameplay.Enemy.Dave
     public class DaveIdle : State<DaveController>
     {
         private float minIdleTime = 0.5f;
-        private float maxIdleTime = 1f;
+        private float maxIdleTime = 1.5f;
 
         private Timer idleTimer;
         
@@ -19,6 +19,10 @@ namespace Gameplay.Enemy.Dave
             
             idleTimer = new Timer(Random.Range(minIdleTime, maxIdleTime));
             idleTimer.Start();
+            idleTimer.OnTimerComplete += () =>
+            {
+                Machine.ChangeState<DaveChase>();
+            };
         }
 
         public override void OnUpdate()

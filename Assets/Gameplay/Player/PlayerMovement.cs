@@ -62,11 +62,12 @@ namespace Gameplay.Player
         private bool jumpCutFlag = false;
         
         //Velocity
-        private Vector3 velocity => moveVelocity + jumpVelocity + gravityVelocity;
+        private Vector3 velocity => moveVelocity + jumpVelocity + gravityVelocity + additionalVelocity;
         private Vector3 moveVelocity;
         private Vector3 jumpVelocity;
         private Vector3 gravityVelocity = Vector3.zero;
-
+        private Vector3 additionalVelocity = Vector3.zero;
+        
         private void OnEnable()
         {
             playerInputMap.OnMove += MovementInput;
@@ -118,6 +119,8 @@ namespace Gameplay.Player
 	        if (jumpEnabled)
 				HandleVertical();
 	        
+	        HandleImpulse();
+	        
 	        ApplyMovement();
         }
 
@@ -150,7 +153,19 @@ namespace Gameplay.Player
 	        rb.linearVelocity = velocity;
 	        //rb.MovePosition(rb.position + (velocity * Time.fixedDeltaTime));
         }
+
+        public void HandleImpulse()
+        {
+	        additionalVelocity = Vector3.Lerp(
+		        additionalVelocity, 
+		        Vector3.zero, 
+		        deceleration * Time.fixedDeltaTime);
+        }
         
+        public void AddImpulse(Vector3 impulse)
+        {
+	        additionalVelocity += impulse;
+        }
 
         private void HandleHorizontal()
         {
@@ -171,7 +186,7 @@ namespace Gameplay.Player
             moveVelocity = Vector3.Lerp(
                 moveVelocity, 
                 movementInput * targetSpeed, 
-                accelRate * Time.deltaTime);
+                accelRate * Time.fixedDeltaTime);
         }
 
         private void HandleVertical()
@@ -186,7 +201,8 @@ namespace Gameplay.Player
             else
                 gravityVelocity = Vector3.Lerp(gravityVelocity, gravity, gravityAccel * Time.fixedDeltaTime);
         }
-        
+
+        #region Jump
         private void JumpCheck()
         {
         	if (jumpBufferTime > 0)
@@ -269,6 +285,7 @@ namespace Gameplay.Player
         	jumpVelocity = Vector3.zero;
         	gravityVelocity = Vector3.zero;
         }
+        #endregion
         
         private void CollisionCheck()
         {

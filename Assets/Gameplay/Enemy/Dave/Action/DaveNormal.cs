@@ -23,6 +23,13 @@ namespace Gameplay.Enemy.Dave.Action
             timer.Start();
         }
 
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            
+            timer.Tick(Time.deltaTime);
+        }
+
         public override void OnExit()
         {
             base.OnExit();

@@ -241,3 +241,15 @@ MonoBehaviour:
     hasIcon: 1
     iconName: SphereCollider Icon
     isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1229747290-0
+    hasColor: 1
+    color: {r: 0.7830189, g: 0.47866273, b: 0.1071111, a: 1}
+    hasIcon: 1
+    iconName: Folder Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1838840994-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: MeshRenderer Icon
+    isCustomIcon: 0
